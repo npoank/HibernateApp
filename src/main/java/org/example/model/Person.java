@@ -8,7 +8,8 @@ public class Person {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_person")
+    @SequenceGenerator(name = "seq_gen_person", sequenceName = "person_id_seq", allocationSize = 1)
     private int id;
 
     @Column(name = "name")
