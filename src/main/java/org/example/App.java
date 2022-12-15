@@ -26,22 +26,21 @@ public class App {
         try {
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 2);
-            Item newItem = new Item("Test item", person);
+            Person person = session.get(Person.class, 3);
+            List<Item> personItems = person.getItems();
 
-            person.getItems().add(newItem);
+            for(Item item : personItems){
+                session.remove(item);
+            }
 
-            session.save(newItem);
+            person.getItems().clear();
 
-            System.out.println("///////////////////////////");
+            System.out.println("//////////////////////////////////////////////");
 
-            Person testPerson = new Person("TestPerson", 30);
-            Item testItem = new Item("Item for TestPerson", testPerson);
+            Person person1 = session.get(Person.class, 2);
+            session.remove(person1);
 
-            testPerson.setItems(new ArrayList<>(Collections.singletonList(testItem)));
-
-            session.save(testPerson);
-            session.save(testItem);
+            person1.getItems().forEach(i -> i.setOwner(null));
 
             session.getTransaction().commit();
 
