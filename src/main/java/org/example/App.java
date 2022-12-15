@@ -6,6 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -23,17 +26,22 @@ public class App {
         try {
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 3);
-            System.out.println(person);
-            List<Item> items = person.getItems();
-            System.out.println(items);
+            Person person = session.get(Person.class, 2);
+            Item newItem = new Item("Test item", person);
 
-            System.out.println("/////////////////////////////////////////");
+            person.getItems().add(newItem);
 
-            Item item = session.get(Item.class, 3);
-            System.out.println(item);
-            Person person1 = item.getOwner();
-            System.out.println(person1);
+            session.save(newItem);
+
+            System.out.println("///////////////////////////");
+
+            Person testPerson = new Person("TestPerson", 30);
+            Item testItem = new Item("Item for TestPerson", testPerson);
+
+            testPerson.setItems(new ArrayList<>(Collections.singletonList(testItem)));
+
+            session.save(testPerson);
+            session.save(testItem);
 
             session.getTransaction().commit();
 
