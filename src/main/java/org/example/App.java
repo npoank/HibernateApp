@@ -27,20 +27,13 @@ public class App {
             session.beginTransaction();
 
             Person person = session.get(Person.class, 3);
-            List<Item> personItems = person.getItems();
+            Item item = session.get(Item.class, 2);
 
-            for(Item item : personItems){
-                session.remove(item);
-            }
+            item.getOwner().getItems().remove(item);
 
-            person.getItems().clear();
+            item.setOwner(person);
+            person.getItems().add(item);
 
-            System.out.println("//////////////////////////////////////////////");
-
-            Person person1 = session.get(Person.class, 2);
-            session.remove(person1);
-
-            person1.getItems().forEach(i -> i.setOwner(null));
 
             session.getTransaction().commit();
 
