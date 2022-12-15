@@ -26,14 +26,13 @@ public class App {
         try {
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 3);
-            Item item = session.get(Item.class, 2);
+            Person person = new Person("CascadePerson", 27);
 
-            item.getOwner().getItems().remove(item);
+            person.addItem(new Item("CascadeItem1"));
+            person.addItem(new Item("CascadeItem2"));
+            person.addItem(new Item("CascadeItem3"));
 
-            item.setOwner(person);
-            person.getItems().add(item);
-
+            session.save(person);
 
             session.getTransaction().commit();
 
