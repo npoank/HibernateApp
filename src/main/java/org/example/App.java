@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class App {
     public static void main(String[] args) {
-        Configuration configuration = new Configuration().addAnnotatedClass(Actor.class).
-                addAnnotatedClass(Movie.class);
+        Configuration configuration = new Configuration().addAnnotatedClass(Person.class).
+                addAnnotatedClass(Item.class);
 
         SessionFactory sessionFactory = configuration.buildSessionFactory();
 
@@ -25,43 +25,18 @@ public class App {
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-//            Movie movie = new Movie("Film1", 1994);
-//            Actor actor1 = new Actor("Actor1", 36);
-//            Actor actor2 = new Actor("Actor2", 40);
-//
-//            movie.setActors(new ArrayList<>(List.of(actor1, actor2)));
-//
-//            actor1.setMovies(new ArrayList<>(Collections.singletonList(movie)));
-//            actor2.setMovies(new ArrayList<>(Collections.singletonList(movie)));
-//
-//            session.save(movie);
-//            session.save(actor1);
-//            session.save(actor2);
+            // lazy loading by default
+            //Person person = session.get(Person.class, 1);
+            //System.out.println("Get a person");
+            // Get related with person entity
+            //System.out.println(person.getItems());
 
-//            System.out.println("///////////////////////////////////////////////////////////");
-//
-//            Movie movie1 = session.get(Movie.class, 1);
-//            System.out.println(movie1.getActors());
-//
-//            System.out.println("///////////////////////////////////////////////////////////");
-//
-//            Movie movie2 = new Movie("Film2", 2000);
-//            Actor actor3 = session.get(Actor.class, 2);
-//
-//            movie2.setActors(new ArrayList<>(Collections.singletonList(actor3)));
-//            actor3.getMovies().add(movie2);
-//
-//            session.save(movie2);
+            System.out.println("///////////////////////////////////////");
 
-            System.out.println("///////////////////////////////////////////////////////////");
-
-            Actor actor4 = session.get(Actor.class, 2);
-            System.out.println(actor4.getMovies());
-
-            Movie movie4 = actor4.getMovies().get(0);
-
-            actor4.getMovies().remove(0);
-            movie4.getActors().remove(actor4);
+            // eager loading by default
+            Item item = session.get(Item.class, 1);
+            System.out.println("Get an item");
+            System.out.println(item.getOwner());
 
             session.getTransaction().commit();
 
