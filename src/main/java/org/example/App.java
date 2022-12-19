@@ -25,21 +25,17 @@ public class App {
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-            // lazy loading by default
-            //Person person = session.get(Person.class, 1);
-            //System.out.println("Get a person");
+            Person person = session.get(Person.class, 1);
+            System.out.println("Get a person");
             // Get related with person entity
-            //System.out.println(person.getItems());
+            System.out.println(person.getItems());
 
             System.out.println("///////////////////////////////////////");
 
-            // eager loading by default
-            Item item = session.get(Item.class, 1);
-            System.out.println("Get an item");
-            System.out.println(item.getOwner());
-
             session.getTransaction().commit();
 
+            // out of session
+            System.out.println(person.getItems());
         }
 
     }
