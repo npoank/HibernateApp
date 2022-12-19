@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.model.*;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -27,8 +28,10 @@ public class App {
 
             Person person = session.get(Person.class, 1);
             System.out.println("Get a person");
-            // Get related with person entity
-            System.out.println(person.getItems());
+            System.out.println(person);
+
+            // loading lazy entity by initialize to use entity out of session
+            Hibernate.initialize(person.getItems());
 
             System.out.println("///////////////////////////////////////");
 
