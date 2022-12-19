@@ -28,17 +28,27 @@ public class App {
 
             Person person = session.get(Person.class, 1);
             System.out.println("Get a person");
-            System.out.println(person);
 
-            // loading lazy entity by initialize to use entity out of session
+            session.getTransaction().commit();
+            //session close
+            System.out.println("Out of session");
+
+            //open session and transaction again (can do anywhere in code)
+            session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+
+            System.out.println("In second transaction");
+
+            person = (Person) session.merge(person);
             Hibernate.initialize(person.getItems());
-
-            System.out.println("///////////////////////////////////////");
 
             session.getTransaction().commit();
 
-            // out of session
+            System.out.println("Out of second session");
+
             System.out.println(person.getItems());
+
+
         }
 
     }
