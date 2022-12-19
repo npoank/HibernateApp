@@ -1,9 +1,6 @@
 package org.example;
 
-import org.example.model.Item;
-import org.example.model.Passport;
-import org.example.model.Person;
-import org.example.model.Personality;
+import org.example.model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -19,46 +16,55 @@ import java.util.List;
  */
 public class App {
     public static void main(String[] args) {
-        Configuration configuration = new Configuration().addAnnotatedClass(Personality.class).
-                addAnnotatedClass(Passport.class);
+        Configuration configuration = new Configuration().addAnnotatedClass(Actor.class).
+                addAnnotatedClass(Movie.class);
 
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
 
-        try {
+        try (sessionFactory) {
+            Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-            Personality personality = new Personality("Test personality", 35);
-            Passport passport = new Passport(123456);
+//            Movie movie = new Movie("Film1", 1994);
+//            Actor actor1 = new Actor("Actor1", 36);
+//            Actor actor2 = new Actor("Actor2", 40);
+//
+//            movie.setActors(new ArrayList<>(List.of(actor1, actor2)));
+//
+//            actor1.setMovies(new ArrayList<>(Collections.singletonList(movie)));
+//            actor2.setMovies(new ArrayList<>(Collections.singletonList(movie)));
+//
+//            session.save(movie);
+//            session.save(actor1);
+//            session.save(actor2);
 
-            personality.setPassport(passport);
+//            System.out.println("///////////////////////////////////////////////////////////");
+//
+//            Movie movie1 = session.get(Movie.class, 1);
+//            System.out.println(movie1.getActors());
+//
+//            System.out.println("///////////////////////////////////////////////////////////");
+//
+//            Movie movie2 = new Movie("Film2", 2000);
+//            Actor actor3 = session.get(Actor.class, 2);
+//
+//            movie2.setActors(new ArrayList<>(Collections.singletonList(actor3)));
+//            actor3.getMovies().add(movie2);
+//
+//            session.save(movie2);
 
-            session.save(personality);
+            System.out.println("///////////////////////////////////////////////////////////");
 
-            System.out.println("/////////////////////////////////////////////");
+            Actor actor4 = session.get(Actor.class, 2);
+            System.out.println(actor4.getMovies());
 
-            Personality personality1 = session.get(Personality.class, 1);
-            System.out.println(personality1.getPassport().getPassportNumber());
+            Movie movie4 = actor4.getMovies().get(0);
 
-            System.out.println("////////////////////////////////////////////");
-
-            Passport passport1 = session.get(Passport.class, 1);
-            System.out.println(passport1.getPersonality().getName());
-
-            System.out.println("////////////////////////////////////////////");
-
-            Personality personality2 = session.get(Personality.class, 1);
-            personality2.getPassport().setPassportNumber(654321);
-
-            System.out.println("////////////////////////////////////////////");
-
-            Personality personality3 = session.get(Personality.class, 2);
-            session.remove(personality3);
+            actor4.getMovies().remove(0);
+            movie4.getActors().remove(actor4);
 
             session.getTransaction().commit();
 
-        } finally {
-            sessionFactory.close();
         }
 
     }
